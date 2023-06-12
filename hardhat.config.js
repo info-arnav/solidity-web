@@ -1,6 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
-require("./tasks/block-number");
+require("hardhat-gas-reporter");
+require("hardhat-deploy");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 
@@ -15,10 +16,23 @@ module.exports = {
       url: SEPOLIA_PROVIDER,
       accounts: [PRIVATE_KEY],
       chainId: 11155111,
+      blockConfirmations: 6,
     },
   },
-  solidity: "0.8.18",
+  solidity: {
+    compilers: [
+      { version: "0.8.18" },
+      { version: "0.8.7" },
+      { version: "0.8.0" },
+    ],
+  },
   etherscan: {
     apiKey: ETHERSCAN_API_KEY,
+  },
+  gasReporter: { enabled: true, outputFile: "gas-report.txt", noColors: true },
+  namedAccounts: {
+    deployer: {
+      default: 0,
+    },
   },
 };
